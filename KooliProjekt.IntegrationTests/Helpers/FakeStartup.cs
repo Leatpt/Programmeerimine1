@@ -1,7 +1,7 @@
 ﻿using System;
 using KooliProjekt.Controllers;
 using KooliProjekt.Data;
-using KooliProjekt.Services;
+//using KooliProjekt.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +36,7 @@ namespace KooliProjekt.IntegrationTests.Helpers
                     .AddApplicationPart(typeof(HomeController).Assembly);
 
 
-            services.AddScoped<ITodoListService, TodoListService>();    
+            //services.AddScoped<ITodoListService, TodoListService>();    
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

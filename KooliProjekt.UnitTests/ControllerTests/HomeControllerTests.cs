@@ -1,5 +1,6 @@
 ﻿using KooliProjekt.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace KooliProjekt.UnitTests.ControllerTests
@@ -10,7 +11,7 @@ namespace KooliProjekt.UnitTests.ControllerTests
         public void Index_should_return_index_view()
         {
             // Arrange
-            var controller = new HomeController();
+            var controller = new HomeController(null);
 
             // Act
             var result = controller.Index() as ViewResult;
