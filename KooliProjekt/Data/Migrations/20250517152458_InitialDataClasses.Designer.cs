@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KooliProjekt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250513160527_InitialDataClasses")]
+    [Migration("20250517152458_InitialDataClasses")]
     partial class InitialDataClasses
     {
         /// <inheritdoc />
@@ -20,10 +20,32 @@ namespace KooliProjekt.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("KooliProjekt.Data.AttachedFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("AttachedFiles");
+                });
 
             modelBuilder.Entity("KooliProjekt.Data.Customer", b =>
                 {
@@ -69,10 +91,6 @@ namespace KooliProjekt.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AttachedFiles")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -92,7 +110,7 @@ namespace KooliProjekt.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Schedule")
@@ -101,7 +119,6 @@ namespace KooliProjekt.Data.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Summary")
-                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
@@ -444,6 +461,17 @@ namespace KooliProjekt.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("KooliProjekt.Data.AttachedFile", b =>
+                {
+                    b.HasOne("KooliProjekt.Data.Event", "Event")
+                        .WithMany("AttachedFiles")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
             modelBuilder.Entity("KooliProjekt.Data.Invoice", b =>
                 {
                     b.HasOne("KooliProjekt.Data.Customer", "Customer")
@@ -549,6 +577,11 @@ namespace KooliProjekt.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("KooliProjekt.Data.Event", b =>
+                {
+                    b.Navigation("AttachedFiles");
                 });
 
             modelBuilder.Entity("KooliProjekt.Data.Invoice", b =>

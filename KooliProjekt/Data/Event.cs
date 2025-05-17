@@ -16,16 +16,19 @@ namespace KooliProjekt.Data
         public string Description { get; set; }
         [Required]
         public int MaxParticipants { get; set; }
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         [Required]
         [StringLength(1000)]
         public string Schedule {  get; set; }
         [StringLength(2000)]
-        public string Summary { get; set; }
-        public List<String> AttachedFiles { get; set; }
+        public string? Summary { get; set; }
+        public List<AttachedFile>? AttachedFiles { get; set; } 
         public bool IsPaidEvent { get; set; }
 
-
+        public Event()
+        {
+            AttachedFiles = new List<AttachedFile>();
+        }
 
     }
 }

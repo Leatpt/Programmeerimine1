@@ -16,6 +16,7 @@ namespace KooliProjekt.Data
         public DbSet<InvoiceLine> InvoiceLines { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Registration> Registrations { get; set; }
+        public DbSet<AttachedFile> AttachedFiles { get; set; }
 
     }
 }

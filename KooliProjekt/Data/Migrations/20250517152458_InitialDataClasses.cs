@@ -38,15 +38,34 @@ namespace KooliProjekt.Data.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     MaxParticipants = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Schedule = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    AttachedFiles = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Summary = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     IsPaidEvent = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AttachedFiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AttachedFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AttachedFiles_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +172,11 @@ namespace KooliProjekt.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AttachedFiles_EventId",
+                table: "AttachedFiles",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvoiceLines_InvoiceId",
                 table: "InvoiceLines",
                 column: "InvoiceId");
@@ -186,6 +210,10 @@ namespace KooliProjekt.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+           
+            migrationBuilder.DropTable(
+                name: "AttachedFiles");
+
             migrationBuilder.DropTable(
                 name: "InvoiceLines");
 

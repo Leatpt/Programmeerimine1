@@ -1,6 +1,7 @@
 using KooliProjekt.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace KooliProjekt
 {
@@ -46,6 +47,13 @@ namespace KooliProjekt
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            using (var scope = app.Services.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            {
+                context.Database.EnsureCreated();
+                SeedData.Generate(context);
+            }
 
             app.Run();
         }
