@@ -18,6 +18,6 @@ namespace KooliProjekt.Data
         [Required]
         [StringLength(100)]
         public string Address { get; set; }
-        public decimal Discount { get; set; }
+        public decimal? Discount { get; set; }
     }
 }
