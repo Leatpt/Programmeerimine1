@@ -25,10 +25,5 @@ namespace KooliProjekt.Data
         public List<AttachedFile>? AttachedFiles { get; set; } 
         public bool IsPaidEvent { get; set; }
 
-        public Event()
-        {
-            AttachedFiles = new List<AttachedFile>();
-        }
-
     }
 }

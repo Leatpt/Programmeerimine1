@@ -1,4 +1,5 @@
 using KooliProjekt.Data;
+using KooliProjekt.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
@@ -11,6 +12,8 @@ namespace KooliProjekt
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Register EventService as the implementation for IEventService
+            builder.Services.AddScoped<IEventService, EventService>();
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>

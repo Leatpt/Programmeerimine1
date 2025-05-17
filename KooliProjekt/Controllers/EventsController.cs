@@ -6,22 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KooliProjekt.Data;
+using KooliProjekt.Services;
 
 namespace KooliProjekt.Controllers
 {
     public class EventsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //1. DbContext läheb kontrollerist ära
+        // private readonly ApplicationDbContext _context;
+        //2. Kontroller kasutab teenuse klassi või klasse
+        private readonly IEventService _eventService;
 
-        public EventsController(ApplicationDbContext context)
+        public EventsController(IEventService eventService)
         {
-            _context = context;
+            _eventService = eventService;
         }
 
         // GET: Events
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            return View(await _context.Events.ToListAsync());
+            var data = await _eventService.List(page, 5);
+            return View(data);
         }
 
         // GET: Events/Details/5
@@ -32,8 +37,7 @@ namespace KooliProjekt.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var @event = await _eventService.Get(id.Value);
             if (@event == null)
             {
                 return NotFound();
@@ -57,8 +61,8 @@ namespace KooliProjekt.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@event);
-                await _context.SaveChangesAsync();
+                await _eventService.Save(@event);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(@event);
@@ -72,7 +76,7 @@ namespace KooliProjekt.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.FindAsync(id);
+            var @event = await _eventService.Get(id.Value);
             if (@event == null)
             {
                 return NotFound();
@@ -94,22 +98,7 @@ namespace KooliProjekt.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(@event);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EventExists(@event.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _eventService.Save(@event);
                 return RedirectToAction(nameof(Index));
             }
             return View(@event);
@@ -123,8 +112,7 @@ namespace KooliProjekt.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var @event = await _eventService.Get(id.Value);
             if (@event == null)
             {
                 return NotFound();
@@ -138,19 +126,8 @@ namespace KooliProjekt.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @event = await _context.Events.FindAsync(id);
-            if (@event != null)
-            {
-                _context.Events.Remove(@event);
-            }
-
-            await _context.SaveChangesAsync();
+            await _eventService.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool EventExists(int id)
-        {
-            return _context.Events.Any(e => e.Id == id);
         }
     }
 }
