@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Data
 {
@@ -10,9 +11,11 @@ namespace KooliProjekt.Data
         public bool IsPaidEvent { get; set; }
         [Required]
         public Customer Customer { get; set; }
+        [DisplayName("Customer")]
         public int CustomerId { get; set; }
         [Required]
         public Event Event { get; set; }
+        [DisplayName("Event")]
         public int EventId { get; set; }
     }
 }

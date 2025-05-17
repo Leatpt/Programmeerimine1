@@ -48,8 +48,8 @@ namespace KooliProjekt.Controllers
         // GET: Invoices/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address");
-            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Description");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name");
+            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Name");
             return View();
         }
 
@@ -66,8 +66,8 @@ namespace KooliProjekt.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", invoice.CustomerId);
-            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Description", invoice.EventId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", invoice.CustomerId);
+            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Name", invoice.EventId);
             return View(invoice);
         }
 
@@ -84,8 +84,8 @@ namespace KooliProjekt.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", invoice.CustomerId);
-            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Description", invoice.EventId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", invoice.CustomerId);
+            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Name", invoice.EventId);
             return View(invoice);
         }
 
@@ -121,8 +121,8 @@ namespace KooliProjekt.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Address", invoice.CustomerId);
-            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Description", invoice.EventId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", invoice.CustomerId);
+            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Name", invoice.EventId);
             return View(invoice);
         }
 
