@@ -23,7 +23,7 @@ namespace KooliProjekt.Controllers
         }
 
         // GET: Events
-        public async Task<IActionResult> Index(int page)
+        public async Task<IActionResult> Index(int page = 1)
         {
             var data = await _eventService.List(page, 5);
             return View(data);

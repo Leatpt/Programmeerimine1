@@ -12,8 +12,9 @@ namespace KooliProjekt
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Register EventService as the implementation for IEventService
+            // Register Service as the implementation for IService
             builder.Services.AddScoped<IEventService, EventService>();
+            builder.Services.AddScoped<IInvoiceService, InvoiceService>();
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
