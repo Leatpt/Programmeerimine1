@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KooliProjekt.Data.Event>
+﻿@model EventIndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,41 +9,59 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form method="get">
+    <div class="form-group">
+        <label class="control-label">Märksõna</label>
+        <input asp-for="Search.Keyword" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Tasuline</label>
+        <select asp-for="Search.IsPaidEvent" class="form-control">
+            <option value="">-</option>
+            <option value="true">Jah</option>
+            <option value="false">Ei</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Otsi</button>
+        <a asp-controller="Events" asp-action="Index" class="btn btn-primary">Reset</a>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Data.Results[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model.Data.Results[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.Data.Results[0].Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaxParticipants)
+                @Html.DisplayNameFor(model => model.Data.Results[0].MaxParticipants)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Data.Results[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Schedule)
+                @Html.DisplayNameFor(model => model.Data.Results[0].Schedule)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Summary)
+                @Html.DisplayNameFor(model => model.Data.Results[0].Summary)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AttachedFiles)
+                @Html.DisplayNameFor(model => model.Data.Results[0].AttachedFiles)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPaidEvent)
+                @Html.DisplayNameFor(model => model.Data.Results[0].IsPaidEvent)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Data) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -81,3 +99,5 @@
 }
     </tbody>
 </table>
+
+@(await Component.InvokeAsync<PagerViewComponent>(Model.Data))
