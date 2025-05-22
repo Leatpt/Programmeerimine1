@@ -8,14 +8,21 @@ using KooliProjekt.Models;
 
 namespace KooliProjekt.UnitTests.ControllerTests
 {
-    public class EventsControllerTests() 
+    public class EventsControllerTests
     {
+        private readonly Mock<IEventService> _eventServiceMock;
+        private readonly EventsController _controller;
+
+        public EventsControllerTests()
+        {
+            _eventServiceMock = new Mock<IEventService>();
+            _controller = new EventsController(_eventServiceMock.Object);
+        }
+
         [Fact]
         public async Task Index_should_return_view_and_data()
         {
             // Arrange
-            var eventServiceMock = new Mock<IEventService>();
-            var controller = new EventsController(eventServiceMock.Object);
             var page = 1;
             var expectedEvents = new List<Event>
             {
@@ -31,11 +38,11 @@ namespace KooliProjekt.UnitTests.ControllerTests
                 RowCount = 2,
             };
 
-            eventServiceMock
+            _eventServiceMock
                 .Setup(x => x.List(page, It.IsAny<int>(), null))
                 .ReturnsAsync(pagedResult);
             // Act
-            var result = await controller.Index(page) as ViewResult;
+            var result = await _controller.Index(page) as ViewResult;
 
             // Assert
             Assert.NotNull(result);
