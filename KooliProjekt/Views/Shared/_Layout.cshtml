@@ -51,15 +51,18 @@
 <body class="ecommerce">
     @*<partial name="_TopBar" />*@
     <partial name="_Header" />
-    <div class="main">
+    <div class="main" id="wrap">
         <div class="container">
             @*<ul class="breadcrumb">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="">Store</a></li>
                 <li class="active">Cool green dress with red bell</li>
             </ul>*@
-            <div class="row margin-bottom-40">
-                <partial name="_SideBar" />
+            <div class="row margin-bottom-40 maring-top-40">
+                @if (ViewBag.ShowSidebar != false)
+                {
+                    <partial name="_SideBar" />
+                }
 
                 <!-- BEGIN CONTENT -->
                 <div class="col-md-9 col-sm-7">
@@ -69,10 +72,8 @@
             </div>
         </div>
     </div>
-
     <partial name="_Footer" />
-
-    <!-- Load javascripts at bottom, this will reduce page load time -->
+     <!-- Load javascripts at bottom, this will reduce page load time -->
     <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
     <!--[if lt IE 9]>
     <script src="~/assets/plugins/respond.min.js"></script>
