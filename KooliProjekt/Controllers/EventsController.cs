@@ -28,7 +28,6 @@ namespace KooliProjekt.Controllers
         {
             model = model ?? new EventIndexModel();
             model.Data = await _eventService.List(page, 5, model.Search);
-            // var model = await _eventService.List(page, 5, search);
             return View(model);
         }
 
